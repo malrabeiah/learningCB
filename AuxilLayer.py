@@ -1,8 +1,6 @@
-#!/usr/bin/env python
-# -*- coding: utf-8 -*-
-
+# Auxiliary Layer 
 #
-# Authors: Chiheb Trabelsi
+# Authors: Muhammad Alrabeiah
 #
 
 import sys;sys.path.append('.')
@@ -10,7 +8,7 @@ from keras import backend as K
 from keras.layers import Layer
 
 
-class NewLayer_AA(Layer):
+class AuxilLayer_AA(Layer):
 
     def __init__(self, in_shape,batch_size):
         super(NewLayer_AA, self).__init__()
@@ -33,26 +31,4 @@ class NewLayer_AA(Layer):
         S = list(input_shape)
         output_shape = ( S[0],1,int(S[1]/2) )
         return tuple(output_shape)
-
-    # def get_config(self):
-    #     if self.kernel_initializer in {'complex'}:
-    #         ki = self.kernel_initializer
-    #     else:
-    #         ki = initializers.serialize(self.kernel_initializer)
-    #     config = {
-    #         'units': self.units,
-    #         'activation': activations.serialize(self.activation),
-    #         'use_bias': self.use_bias,
-    #         'init_criterion': self.init_criterion,
-    #         'kernel_initializer': ki,
-    #         'bias_initializer': initializers.serialize(self.bias_initializer),
-    #         'kernel_regularizer': regularizers.serialize(self.kernel_regularizer),
-    #         'bias_regularizer': regularizers.serialize(self.bias_regularizer),
-    #         'activity_regularizer': regularizers.serialize(self.activity_regularizer),
-    #         'kernel_constraint': constraints.serialize(self.kernel_constraint),
-    #         'bias_constraint': constraints.serialize(self.bias_constraint),
-    #         'seed': self.seed,
-    #     }
-    #     base_config = super(ComplexDense, self).get_config()
-    #     return dict(list(base_config.items()) + list(config.items()))
 
