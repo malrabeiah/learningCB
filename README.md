@@ -6,6 +6,8 @@ Designing smart beam-forming codebooks.
 
 2- [DeepMiMO dataset](http://www.deepmimo.net/?i=1)
 
-3- Keras
+3- Keras with Theano backend
 
-4- [Deep Complex Nets](https://github.com/ChihebTrabelsi/deep_complex_networks)
+# Note:
+The implementation of the complex-valued fully-connected layer follows that in [Deep Complex Nets](https://github.com/ChihebTrabelsi/deep_complex_networks) with some modifications.
+
