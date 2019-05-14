@@ -9,5 +9,5 @@ Designing smart beam-forming codebooks.
 3- Keras with Theano backend
 
 # Note:
-The implementation of the complex-valued fully-connected layer follows that in [Deep Complex Nets](https://github.com/ChihebTrabelsi/deep_complex_networks) with some modifications.
+The implementation of the complex-valued fully-connected layer is borrowed form that in [Deep Complex Nets](https://github.com/ChihebTrabelsi/deep_complex_networks) with some modifications.
 
