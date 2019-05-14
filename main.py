@@ -6,7 +6,7 @@ import keras.layers as layer
 from keras.models import Sequential, Input, Model
 from complexnn.dense import ComplexDense
 from MyDense import MyDense
-from complexnn.NewLayer_AA import NewLayer_AA
+from AuxilLayer import AxuilLayer
 from DataPrep import dataPrep
 from keras.initializers import Constant
 import scipy.io as scio
@@ -49,7 +49,7 @@ for N in num_of_beams:
 	# ------
 	xBatch = Input(shape=(len_inp,))
 	fc1 = MyDense(N, activation='linear', use_bias=False)(xBatch)# bias_initializer=Constant(value=-.1)
-	abs_prePool = NewLayer_AA(2*N,batch_size)(fc1)
+	abs_prePool = AuxilLayer(2*N,batch_size)(fc1)
 	max_pooling = layer.MaxPool1D(pool_size=int(N),data_format='channels_first')(abs_prePool)
 	model = Model(inputs=xBatch, outputs=max_pooling)
 
