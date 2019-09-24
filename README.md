@@ -1,13 +1,19 @@
 # Environment-Aware Codebook
-Designing smart beam-forming codebooks.
+Learning environment-aware and hardware-compatable mmWave beam-forming codebooks.
 
 # Requirment:
-1- MATLAB
 
-2- [DeepMiMO dataset](http://www.deepmimo.net/?i=1)
+1-Keras with Theano backend.
 
-3- Keras with Theano backend
+2-Numpy library.
+
+3-Python 3.6 or above.
+
+Optional:
+
+1- MATLAB for data preperation. 
 
 # Note:
-The implementation of the complex-valued fully-connected layer is borrowed form that in [Deep Complex Nets](https://github.com/ChihebTrabelsi/deep_complex_networks) with some modifications.
+The implementation of the complex-valued fully-connected layer is guided by that in [Deep Complex Nets](https://github.com/ChihebTrabelsi/deep_complex_networks) with some modifications.
 
+# Citation
