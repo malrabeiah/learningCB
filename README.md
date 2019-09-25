@@ -1,5 +1,5 @@
 # Environment-Aware Codebook
-Learning environment-aware and hardware-compatable mmWave beam-forming codebooks.
+Learning environment-aware and hardware-compatible mmWave beam-forming codebooks using Artificial Neural Networks (ANN).
 
 # Requirment:
 
