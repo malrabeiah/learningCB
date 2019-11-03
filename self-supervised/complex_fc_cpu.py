@@ -6,7 +6,7 @@ class FullyConnected:
         self.num_ant = num_ant
         self.thetas = self.thetaInit()
         self.W = np.zeros([self.num_beams, self.num_ant])
-        self.A = np.zeros([2*self.num_ant, 1])
+        self.A = np.zeros([2*self.num_beams, 1])
         self.mode = mode
         self.state = []
         self.grad = np.zeros([self.num_beams, self.num_ant])
@@ -53,9 +53,10 @@ class FullyConnected:
         return self.grad
 
     def estimate(self):
-        A_complex = self.A[:self.num_ant] + 1j * self.A[self.num_ant:]
+        A_complex = self.A[:self.num_beams] + 1j * self.A[self.num_beams:]
         W_conj = np.conj(self.W)
         h_est = np.matmul(np.linalg.pinv(W_conj, rcond=1e-3), A_complex)
+        h_est = np.concatenate((np.real(h_est), np.imag(h_est)), axis=0)
         return h_est
 
     def update(self, lr=0.01):

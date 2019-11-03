@@ -24,7 +24,7 @@ for num_beams in num_of_beams:
     print(str(num_beams) + '-beams Codebook is generating...')
 
     # Model:
-    net = Model(num_beams, num_ant, mode='orig', accum=False)
+    net = Model(num_beams, num_ant, mode='recon', accum=False)
 
     # Training:
     for epoch_idx in range(epoch_num):
@@ -33,6 +33,7 @@ for num_beams in num_of_beams:
             for ch_idx in range(batch_size):
                 channel = train_data[batch_idx * batch_size + ch_idx, :]
                 loss = net.forward(channel)
+                # print('Loss: %f' % loss)
                 net.backward()
                 net.update() # This statement decides whether accum is True or False
 

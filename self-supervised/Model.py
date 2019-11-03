@@ -23,7 +23,7 @@ class Model:
         P = self.SoftMax.forward(S)
         I = self.ArgMax.forward(S)
         loss = self.Loss.forward(P, I)
-        # print('Loss: %f' % loss)
+        return loss
 
     def backward(self):
         dydx = self.Loss.backward()
