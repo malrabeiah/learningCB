@@ -6,7 +6,7 @@ from ArgmaxLayer import Argmax
 from LossLayer import CrossEntroy
 
 class Model:
-    def __init__(self, num_beams, num_ant, mode='orig', accum='False'):
+    def __init__(self, num_beams, num_ant, mode='orig', accum=False):
         # layers
         self.ComplexFC = FullyConnected(num_beams, num_ant, mode, accum)
         self.Power = Power(num_beams)
@@ -23,7 +23,7 @@ class Model:
         P = self.SoftMax.forward(S)
         I = self.ArgMax.forward(S)
         loss = self.Loss.forward(P, I)
-        print('Loss: %f' % loss)
+        # print('Loss: %f' % loss)
 
     def backward(self):
         dydx = self.Loss.backward()
@@ -33,6 +33,6 @@ class Model:
         self.grad = dydx
         return dydx
 
-    def update(self, lr=0.01):
+    def update(self, lr=0.001):
         self.codebook = self.codebook - lr * self.grad
         return self.codebook

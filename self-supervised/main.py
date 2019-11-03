@@ -19,24 +19,25 @@ train_data = train_inp[0:limit,:] # tailored data
 limit = num_val_batch*batch_size
 val_data = val_inp[0:limit,:] # tailored data
 
-input_size = train_data.shape[1]
+input_size = train_data.shape[1] # 2*#ant
 for num_beams in num_of_beams:
-    print(str(num_beams) + '-beams Codebook')
+    print(str(num_beams) + '-beams Codebook is generating...')
 
     # Model:
-    net = Model(num_beams, num_ant)
+    net = Model(num_beams, num_ant, mode='orig', accum=False)
 
     # Training:
     for epoch_idx in range(epoch_num):
         for batch_idx in range(num_train_batch):
+            print('beam: %d, batch: %d'%(num_beams, batch_idx))
             for ch_idx in range(batch_size):
                 channel = train_data[batch_idx * batch_size + ch_idx, :]
                 loss = net.forward(channel)
                 net.backward()
-            net.update()
+                net.update() # This statement decides whether accum is True or False
 
     # Output:
-    theta = np.transpose(net.codebook)
+    theta = np.transpose(net.codebook) # To MATLAB format: (#ant, #beams)
     print(theta.shape)
     name_of_file = 'theta_LOS' + str(num_beams) + 'beams.mat'
     scio.savemat(name_of_file,

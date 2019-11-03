@@ -1,7 +1,7 @@
 import numpy as np
 
 class FullyConnected:
-    def __init__(self, num_beams, num_ant, mode='orig', accum='False'): # mode: 'orig' (exact channel) or 'recon' (estimated channel)
+    def __init__(self, num_beams, num_ant, mode='orig', accum=False): # mode: 'orig' (exact channel) or 'recon' (estimated channel)
         self.num_beams = num_beams
         self.num_ant = num_ant
         self.thetas = self.thetaInit()
