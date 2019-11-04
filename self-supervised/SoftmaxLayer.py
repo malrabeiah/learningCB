@@ -7,7 +7,7 @@ class Softmax:
         self.den = 0
 
     def forward(self, inputs):
-        self.S = inputs
+        self.S = inputs - np.max(inputs)
         self.den = sum(np.exp(self.S))
         P = np.exp(self.S)/self.den
         return P

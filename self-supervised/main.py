@@ -8,7 +8,7 @@ num_of_beams = [8, 16, 32, 64, 128]
 data_file = 'F:\Dropbox (ASU)\Research\Paper_Codebook Learning\Codes\CodebookLearning_Dataset_Generation\CBL_O1_60_BS3_60GHz_1Path_Corrupted_norm.mat'
 
 batch_size = 500
-epoch_num = 1
+epoch_num = 10
 
 # Data loading and preparation
 train_inp, val_inp = dataPrep(inputName=data_file)
@@ -24,7 +24,7 @@ for num_beams in num_of_beams:
     print(str(num_beams) + '-beams Codebook is generating...')
 
     # Model:
-    net = Model(num_beams, num_ant, mode='recon', accum=False)
+    net = Model(num_beams, num_ant, mode='recon', accum=True)
 
     # Training:
     for epoch_idx in range(epoch_num):
@@ -35,7 +35,7 @@ for num_beams in num_of_beams:
                 loss = net.forward(channel)
                 # print('Loss: %f' % loss)
                 net.backward()
-                net.update() # This statement decides whether accum is True or False
+            net.update(lr=0.001) # This statement decides whether accum is True or False
 
     # Output:
     theta = np.transpose(net.codebook) # To MATLAB format: (#ant, #beams)
