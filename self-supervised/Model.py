@@ -33,6 +33,6 @@ class Model:
         self.grad = dydx
         return dydx
 
-    def update(self, lr=0.001):
+    def update(self, lr=0.1):
         self.codebook = self.codebook - lr * self.grad
         return self.codebook
