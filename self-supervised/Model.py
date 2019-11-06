@@ -34,5 +34,5 @@ class Model:
         return dydx
 
     def update(self, lr=0.1):
-        self.codebook = self.codebook - lr * self.grad
+        self.codebook = self.ComplexFC.update(lr=lr)
         return self.codebook

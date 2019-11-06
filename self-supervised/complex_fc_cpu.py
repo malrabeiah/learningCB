@@ -22,7 +22,7 @@ class FullyConnected:
         elif self.mode == 'recon':
             self.state = []
         else:
-            ValueError('State error: in FullyConnected class.')
+            ValueError('Set mode properly.')
         w_r = np.cos(self.thetas)
         w_i = np.sin(self.thetas)
         self.W = w_r + 1j * w_i
@@ -41,7 +41,7 @@ class FullyConnected:
         elif self.mode == 'recon':
             h = self.estimate()
         else:
-            ValueError('Check mode!')
+            ValueError('Set mode properly.')
         dxdz = np.zeros([2*self.num_beams, self.num_ant])
         for ii in range(self.num_beams):
             dxdz[ii,:] = -h[:self.num_ant]*np.sin(self.thetas[ii,:]) + h[self.num_ant:]*np.cos(self.thetas[ii,:])
@@ -59,7 +59,7 @@ class FullyConnected:
         h_est = np.concatenate((np.real(h_est), np.imag(h_est)), axis=0)
         return h_est
 
-    def update(self, lr=0.01):
+    def update(self, lr=0.1):
         self.thetas = self.thetas - lr * self.grad
         return self.thetas
 

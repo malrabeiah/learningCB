@@ -53,7 +53,7 @@ Type of shuffled_idx: numpy.ndarray with shape (#users,)
 '''
 
 # Debugging ONLY or generating datasets and save
-# inputFile = 'F:\Dropbox (ASU)\Research\Paper_Codebook Learning\Codes\CodebookLearning_Dataset_Generation\CBL_O1_60_BS3_60GHz_1Path_Corrupted_norm.mat'
+# inputFile = 'F:\Dropbox (ASU)\Research\Paper_Codebook Learning\Codes\CodebookLearning_Clean_Generation\CBL_O1_60_BS3_60GHz_1Path_Corrupted_norm.mat'
 # train_inp, val_inp = dataPrep(inputName=inputFile, save_shuffled_idx=True)
 # np.save('trainning_set', train_inp)
 # np.save('validation_set', val_inp)

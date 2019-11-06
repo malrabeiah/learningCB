@@ -4,14 +4,15 @@ from DataPrep import dataPrep, load_data
 from Model import Model
 
 num_ant = 64
-num_of_beams = [8, 16, 32, 64, 128]
+num_of_beams = [8, 16, 32]
 data_file = 'F:\Dropbox (ASU)\Research\Paper_Codebook Learning\Codes\CodebookLearning_Clean_Generation\CBL_O1_60_BS3_60GHz_1Path_Corrupted_norm.mat'
 
 batch_size = 500
-epoch_num = 1
+epoch_num = 10
 
 # Data loading and preparation
-train_inp, val_inp = dataPrep(inputName=data_file)
+# train_inp, val_inp = dataPrep(inputName=data_file)
+train_inp, val_inp = load_data()
 num_train_batch = np.floor(train_inp.shape[0]/batch_size).astype('int')
 num_val_batch = np.floor(val_inp.shape[0]/batch_size).astype('int')
 limit = num_train_batch*batch_size
