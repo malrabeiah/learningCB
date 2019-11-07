@@ -12,7 +12,7 @@ class Model:
         self.Power = Power(num_beams)
         self.SoftMax = Softmax(num_beams)
         self.ArgMax = Argmax(num_beams)
-        self.Loss = CrossEntroy()
+        self.Loss = CrossEntroy(batch_size)
         # codebook and gradient
         self.batch_size = batch_size
         self.codebook = self.ComplexFC.thetas

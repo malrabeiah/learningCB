@@ -26,8 +26,8 @@ class FullyConnected:
             pass
         else:
             ValueError('Set mode properly.')
-        w_r = np.cos(self.thetas)
-        w_i = np.sin(self.thetas)
+        w_r = (1/8)*np.cos(self.thetas)
+        w_i = (1/8)*np.sin(self.thetas)
         self.W = w_r + 1j * w_i
         W_block = np.block([[w_r, w_i], [-w_i, w_r]])
         if ch.shape[0] == W_block.shape[1]:
@@ -49,8 +49,8 @@ class FullyConnected:
         dxdz = np.zeros([2*self.num_beams, self.num_ant])
         for ii in range(self.num_beams):
             theta_ii = self.thetas[ii,:]
-            dxdz[ii,:] = -h_r*np.sin(theta_ii) + h_i*np.cos(theta_ii)
-            dxdz[ii+self.num_beams,:] = -h_i*np.sin(theta_ii) - h_r*np.cos(theta_ii)
+            dxdz[ii,:] = (1/8)*(-h_r*np.sin(theta_ii) + h_i*np.cos(theta_ii))
+            dxdz[ii+self.num_beams,:] = (1/8)*(-h_i*np.sin(theta_ii) - h_r*np.cos(theta_ii))
         if self.accum:
             if self.count < self.batch_size:
                 self.grad = self.grad + np.matmul(dydx, dxdz)

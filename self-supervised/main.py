@@ -4,11 +4,11 @@ from DataPrep import dataPrep, load_data
 from Model import Model
 
 num_ant = 64
-num_of_beams = [8, 16, 32, 64, 128]
+num_of_beams = [64]
 data_file = 'F:\Dropbox (ASU)\Research\Paper_Codebook Learning\Codes\CodebookLearning_Dataset_Generation\CBL_O1_60_BS3_60GHz_1Path_Corrupted_norm.mat'
 
 batch_size = 500
-epoch_num = 50
+epoch_num = 20
 
 # Data loading and preparation
 train_inp, val_inp = dataPrep(inputName=data_file)
@@ -30,12 +30,13 @@ for num_beams in num_of_beams:
     # Training:
     for epoch_idx in range(epoch_num):
         for batch_idx in range(num_train_batch): # This iterates mini-batches over 1 epoch
-            print('beam: %d, epoch: %d, batch: %d'%(num_beams, epoch_idx, batch_idx))
             grad = np.zeros([num_beams, num_ant])
             for ch_idx in range(batch_size):
                 channel = train_data[batch_idx * batch_size + ch_idx, :]
-                loss = net.forward(channel)
+                net.forward(channel)
                 net.backward()
+            loss = net.Loss.loss
+            print('beam: %d, epoch: %d, batch: %d, loss: %f.' % (num_beams, epoch_idx + 1, batch_idx + 1, loss))
             net.codebook = net.update(lr=0.1)
             if net.codebook.dtype != 'float64':
                 ValueError('Bad thing happens!')
