@@ -18,18 +18,18 @@ class Model:
         self.grad = self.ComplexFC.grad
 
     def forward(self, h):
-        A = self.ComplexFC.forward(h)
-        S = self.Power.forward(A)
-        P = self.SoftMax.forward(S)
-        I = self.ArgMax.forward(S)
-        loss = self.Loss.forward(P, I)
+        A = self.ComplexFC.forward(h)   # A.shape: (2*num_beams,) organized as (a_r, a_i)
+        S = self.Power.forward(A)       # S.shape: (num_beams,)
+        P = self.SoftMax.forward(S)     # P.shape: (num_beams,)
+        L = self.ArgMax.forward(S)      # L.shape: (1, num_beams)
+        loss = self.Loss.forward(P, L)
         return loss
 
     def backward(self):
-        dydx = self.Loss.backward()
-        dydx = self.SoftMax.backward(dydx)
-        dydx = self.Power.backward(dydx)
-        dydx = self.ComplexFC.backward(dydx)
+        dL_dP = self.Loss.backward() # dL_dP.shape: (1, num_beams)
+        dL_dS = self.SoftMax.backward(dL_dP)
+        dL_dA = self.Power.backward(dL_dS)
+        dydx = self.ComplexFC.backward(dL_dA)
         self.grad = dydx
         return dydx
 

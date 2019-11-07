@@ -1,17 +1,22 @@
 import numpy as np
 
+# for one-hot vector label only
 class CrossEntroy:
     def __init__(self):
-        self.P = np.array([])
+        self.prob = np.array([])
         self.label = np.array([])
         self.loss = 0
 
     def forward(self, prob, label):
-        self.P = prob.reshape((1, prob.size))
+        self.prob = prob.reshape((1, prob.size))
         self.label = label.reshape((1, label.size))
-        self.loss = -np.sum(self.label * np.log(self.P))
+        pos = self.label.argmax()
+        self.loss = -np.log(self.prob[0, pos]) # np.log is natural logarithm
         return self.loss
 
     def backward(self):
-        dydx = -(self.label/self.P)
-        return dydx
+        pos = self.label.argmax()
+        grad = -1/self.prob[0, pos]
+        dydx = np.zeros([1, self.label.size])
+        dydx[0, pos] = grad
+        return dydx # dydx.shape: (1, num_beams)

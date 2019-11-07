@@ -9,5 +9,5 @@ class Argmax:
         self.S = inputs
         max_pos = self.S.argmax()
         one_hot = np.zeros([1, self.dim])
-        one_hot[0, max_pos] = 1
+        one_hot[0, max_pos] = 1 # one_hot.shape: (1, num_beams)
         return one_hot

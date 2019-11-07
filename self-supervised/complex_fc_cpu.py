@@ -1,16 +1,17 @@
 import numpy as np
 
 class FullyConnected:
-    def __init__(self, num_beams, num_ant, mode='orig', accum=False): # mode: 'orig' (exact channel) or 'recon' (estimated channel)
+    def __init__(self, num_beams, num_ant, mode='orig', accum=False):
         self.num_beams = num_beams
         self.num_ant = num_ant
         self.thetas = self.thetaInit()
         self.W = np.zeros([self.num_beams, self.num_ant])
         self.A = np.zeros([2*self.num_beams, 1])
         self.mode = mode
+        self.accum = accum
         self.state = []
         self.grad = np.zeros([self.num_beams, self.num_ant])
-        self.accum = accum
+        self.one_step_grad = np.zeros([self.num_beams, self.num_ant])
 
     def thetaInit(self):
         init_thetas = 2 * np.pi * np.random.rand(self.num_beams, self.num_ant)
@@ -20,34 +21,37 @@ class FullyConnected:
         if self.mode == 'orig':
             self.state = ch
         elif self.mode == 'recon':
-            self.state = []
+            pass
         else:
             ValueError('Set mode properly.')
         w_r = np.cos(self.thetas)
         w_i = np.sin(self.thetas)
         self.W = w_r + 1j * w_i
-        W_block = np.block([[w_r, w_i],
-                            [-w_i, w_r]])
+        W_block = np.block([[w_r, w_i], [-w_i, w_r]])
         if ch.shape[0] == W_block.shape[1]:
-            self.A = np.matmul(W_block, ch)
+            self.A = np.matmul(W_block, ch) # self.A.shape: (2*num_beams,) organized as (a_r, a_i)
         else:
-            ValueError('Error: dimensions mismatch, FullyConnected.forward!')
+            ValueError('Error: dimensions mismatch! Please check FullyConnected.forward!')
         return self.A
 
     def backward(self, dydx):
-        h = np.zeros([1, 2*self.num_ant])
+        h = []
         if self.mode == 'orig':
             h = self.state
         elif self.mode == 'recon':
             h = self.estimate()
         else:
-            ValueError('Set mode properly.')
+            ValueError('Please set mode properly!')
+        h_r = h[:self.num_ant]
+        h_i = h[self.num_ant:]
         dxdz = np.zeros([2*self.num_beams, self.num_ant])
         for ii in range(self.num_beams):
-            dxdz[ii,:] = -h[:self.num_ant]*np.sin(self.thetas[ii,:]) + h[self.num_ant:]*np.cos(self.thetas[ii,:])
-            dxdz[ii+self.num_beams,:] = -h[self.num_ant:]*np.sin(self.thetas[ii,:]) - h[:self.num_ant]*np.cos(self.thetas[ii,:])
+            theta_ii = self.thetas[ii,:]
+            dxdz[ii,:] = -h_r*np.sin(theta_ii) + h_i*np.cos(theta_ii)
+            dxdz[ii+self.num_beams,:] = -h_i*np.sin(theta_ii) - h_r*np.cos(theta_ii)
         if self.accum:
-            self.grad += np.matmul(dydx, dxdz)
+            self.one_step_grad = np.matmul(dydx, dxdz) # for test only
+            self.grad = self.grad + self.one_step_grad
         else:
             self.grad = np.matmul(dydx, dxdz)
         return self.grad
