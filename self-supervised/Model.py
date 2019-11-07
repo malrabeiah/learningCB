@@ -6,14 +6,15 @@ from ArgmaxLayer import Argmax
 from LossLayer import CrossEntroy
 
 class Model:
-    def __init__(self, num_beams, num_ant, mode='orig', accum=False):
+    def __init__(self, num_beams, num_ant, batch_size, mode='orig', accum=False):
         # layers
-        self.ComplexFC = FullyConnected(num_beams, num_ant, mode, accum)
+        self.ComplexFC = FullyConnected(num_beams, num_ant, batch_size, mode, accum)
         self.Power = Power(num_beams)
         self.SoftMax = Softmax(num_beams)
         self.ArgMax = Argmax(num_beams)
         self.Loss = CrossEntroy()
         # codebook and gradient
+        self.batch_size = batch_size
         self.codebook = self.ComplexFC.thetas
         self.grad = self.ComplexFC.grad
 
@@ -27,9 +28,9 @@ class Model:
 
     def backward(self):
         dL_dP = self.Loss.backward() # dL_dP.shape: (1, num_beams)
-        dL_dS = self.SoftMax.backward(dL_dP)
-        dL_dA = self.Power.backward(dL_dS)
-        dydx = self.ComplexFC.backward(dL_dA)
+        dL_dS = self.SoftMax.backward(dL_dP) # dL_dS.shape: (1, num_beams)
+        dL_dA = self.Power.backward(dL_dS) # dL_dA.shape: (num_beams, 2*num_beams)
+        dydx = self.ComplexFC.backward(dL_dA) # dydx.shape: (num_beams, num_ant)
         self.grad = dydx
         return dydx
 

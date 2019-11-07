@@ -1,9 +1,11 @@
 import numpy as np
 
 class FullyConnected:
-    def __init__(self, num_beams, num_ant, mode='orig', accum=False):
+    def __init__(self, num_beams, num_ant, batch_size, mode='orig', accum=False):
         self.num_beams = num_beams
         self.num_ant = num_ant
+        self.batch_size = batch_size
+        self.count = 0
         self.thetas = self.thetaInit()
         self.W = np.zeros([self.num_beams, self.num_ant])
         self.A = np.zeros([2*self.num_beams, 1])
@@ -50,8 +52,14 @@ class FullyConnected:
             dxdz[ii,:] = -h_r*np.sin(theta_ii) + h_i*np.cos(theta_ii)
             dxdz[ii+self.num_beams,:] = -h_i*np.sin(theta_ii) - h_r*np.cos(theta_ii)
         if self.accum:
-            self.one_step_grad = np.matmul(dydx, dxdz) # for test only
-            self.grad = self.grad + self.one_step_grad
+            if self.count < self.batch_size:
+                self.grad = self.grad + np.matmul(dydx, dxdz)
+                self.count += 1
+            else:
+                self.count = 0
+                self.grad = np.zeros([self.num_beams, self.num_ant])
+                self.grad = self.grad + np.matmul(dydx, dxdz)
+                self.count += 1
         else:
             self.grad = np.matmul(dydx, dxdz)
         return self.grad

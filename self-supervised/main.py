@@ -8,7 +8,7 @@ num_of_beams = [8, 16, 32]
 data_file = 'F:\Dropbox (ASU)\Research\Paper_Codebook Learning\Codes\CodebookLearning_Clean_Generation\CBL_O1_60_BS3_60GHz_1Path_Corrupted_norm.mat'
 
 batch_size = 500
-epoch_num = 20
+epoch_num = 10
 
 # Data loading and preparation
 # train_inp, val_inp = dataPrep(inputName=data_file)
@@ -25,7 +25,7 @@ for num_beams in num_of_beams:
     print(str(num_beams) + '-beams Codebook is generating...')
 
     # Model:
-    net = Model(num_beams, num_ant, mode='orig', accum=True)
+    net = Model(num_beams, num_ant, batch_size, mode='orig', accum=True)
 
     # Training:
     for epoch_idx in range(epoch_num):
@@ -38,7 +38,7 @@ for num_beams in num_of_beams:
                 net.backward()
             net.codebook = net.update(lr=0.1)
             if net.codebook.dtype != 'float64':
-                    ValueError('Bad thing happens!')
+                ValueError('Bad thing happens!')
 
     # Output:
     theta = np.transpose(net.codebook) # To MATLAB format: (#ant, #beams)
@@ -48,15 +48,3 @@ for num_beams in num_of_beams:
                  {'train_inp': train_data,
                   'val_inp': val_data,
                   'codebook': theta})
-
-
-
-
-
-# h_r = np.random.randn(64)
-# h_i = np.random.randn(64)
-# h = np.concatenate((h_r, h_i), axis=0)
-# print(h.shape)
-# fc = FullyConnected(4,64)
-# a = fc.forward(h)
-# print('Break!')
