@@ -17,11 +17,12 @@ Optional:
 The implementation of the complex-valued fully-connected layer is guided by that in [Deep Complex Nets](https://github.com/ChihebTrabelsi/deep_complex_networks) with some modifications.
 
 # Citation
-'''
+If you use this code or part of it, please cite the following paper:
+```
 @article{zhang2020learning,
   title={Learning Beam Codebooks with Neural Networks: Towards Environment-Aware mmWave MIMO},
   author={Zhang, Yu and Alrabeiah, Muhammad and Alkhateeb, Ahmed},
   journal={arXiv preprint arXiv:2002.10663},
   year={2020}
 }
-'''
+```
