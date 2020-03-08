@@ -1,5 +1,5 @@
-# Environment-Aware Codebook
-Learning environment-aware and hardware-compatible mmWave beam-forming codebooks using Artificial Neural Networks (ANN). This repository provides two models. Both are self-supervised and can handle unknown antenna manifold and learn phase-vector codebooks. One requires explicit mmWave channel knowledge while the other does not. Please refer to [paper]() for more details.
+# Environment-Aware Codebooks
+Learning environment-aware and hardware-compatible mmWave beam-forming codebooks using Artificial Neural Networks (ANN). Please refer to [Learning Beam Codebooks with Neural Networks: Towards Environment-Aware mmWave MIMO](https://arxiv.org/abs/2002.10663) for more details.
 
 # Requirment:
 
